@@ -45,7 +45,7 @@ export async function POST(request: Request) {
       {
         $match: {
           email: userEmail,
-          "result.rollno": rollno.toUpperCase(),
+          "result.rollno": rollno,
         },
       },
     ]);

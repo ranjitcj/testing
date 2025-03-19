@@ -3,6 +3,8 @@
 import { Button } from "@/components/ui/button";
 import {
   Form,
+  FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -19,8 +21,9 @@ import { verifyStudentSchema } from "@/schemas/verifyStudentSchemas";
 import { ApiResponseStudentV } from "@/types/ApiResponseStudentV";
 import Image from "next/image";
 import logo from "@/app/logo/logo.png";
+import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp";
 
-// Schema that matches SEC06 format
+// Schema that matches 162 format
 
 export default function VerifyAccount() {
   const router = useRouter();
@@ -80,29 +83,41 @@ export default function VerifyAccount() {
           </div>
         </div>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="w-2/3 space-y-6 mx-auto"
+          >
             <FormField
-              name="rollno"
               control={form.control}
+              name="rollno"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Verify Your Account As Student</FormLabel>
-                  <Input
-                    {...field}
-                    placeholder="Enter your roll number (e.g., SEC06)"
-                    autoComplete="off"
-                  />
+                  <FormControl>
+                    <InputOTP
+                      maxLength={3}
+                      {...field}
+                      onComplete={(value) => {
+                        field.onChange(value);
+                        form.handleSubmit(onSubmit)();
+                      }}
+                    >
+                      <InputOTPGroup>
+                        <InputOTPSlot index={0} />
+                        <InputOTPSlot index={1} />
+                        <InputOTPSlot index={2} />
+                      </InputOTPGroup>
+                    </InputOTP>
+                  </FormControl>
+                  <FormDescription>
+                    Enter the Roll Number provided by your college.
+                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <Button
-              type="submit"
-              className="w-full"
-              disabled={form.formState.isSubmitting}
-            >
-              {form.formState.isSubmitting ? "Verifying..." : "Verify"}
-            </Button>
+
+            <Button type="submit">Submit</Button>
           </form>
         </Form>
       </div>
