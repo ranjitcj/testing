@@ -3,7 +3,15 @@ import { NextRequest, NextResponse } from "next/server";
 import { v2 as cloudinary } from "cloudinary";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "../auth/[...nextauth]/option";
+import dotenv from "dotenv";
 
+dotenv.config();
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 export async function POST(req: NextRequest) {
   try {
     // Check authentication
