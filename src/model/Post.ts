@@ -1,40 +1,129 @@
 import mongoose, { Schema, Document } from "mongoose";
 
-export interface Post extends Document {
+export interface IPost extends Document {
+  content: string;
+  images: {
+    url: string;
+    caption?: string;
+    altText?: string;
+  }[];
   author: mongoose.Types.ObjectId;
-  content?: string;
-  image?: string;
+  category?: string;
+  tags: string[];
   likes: mongoose.Types.ObjectId[];
   comments: {
+    author: mongoose.Types.ObjectId;
     content: string;
-    user: mongoose.Types.ObjectId;
+    likes: mongoose.Types.ObjectId[];
     createdAt: Date;
+    updatedAt?: Date;
   }[];
+  shares: number;
+  views: number;
+  isPrivate: boolean;
+  status: "draft" | "published" | "archived";
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-const PostSchema: Schema<Post> = new mongoose.Schema(
+const PostSchema = new Schema<IPost>(
   {
-    author: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
+    content: {
+      type: String,
+      trim: true,
+      required: [true, "Post content is required"]
     },
-    content: { type: String },
-    image: { type: String },
-    likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    images: [
+      {
+        url: {
+          type: String,
+          required: true
+        },
+        caption: {
+          type: String,
+          default: ""
+        },
+        altText: {
+          type: String,
+          default: ""
+        }
+      }
+    ],
+    author: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: [true, "Author is required"]
+    },
+    category: {
+      type: String,
+      default: "General"
+    },
+    tags: [String],
+    likes: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "User"
+      }
+    ],
     comments: [
       {
-        content: { type: String },
-        user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-        createdAt: { type: Date, default: Date.now },
-      },
+        author: {
+          type: Schema.Types.ObjectId,
+          ref: "User",
+          required: true
+        },
+        content: {
+          type: String,
+          required: true,
+          trim: true
+        },
+        likes: [
+          {
+            type: Schema.Types.ObjectId,
+            ref: "User"
+          }
+        ],
+        createdAt: {
+          type: Date,
+          default: Date.now
+        },
+        updatedAt: {
+          type: Date
+        }
+      }
     ],
+    shares: {
+      type: Number,
+      default: 0
+    },
+    views: {
+      type: Number,
+      default: 0
+    },
+    isPrivate: {
+      type: Boolean,
+      default: false
+    },
+    status: {
+      type: String,
+      enum: ["draft", "published", "archived"],
+      default: "published"
+    }
   },
   { timestamps: true }
 );
 
-const PostModel =
-  (mongoose.models.Post as mongoose.Model<Post>) ||
-  mongoose.model<Post>("Post", PostSchema);
+// Index for faster searching
+PostSchema.index({ title: 'text', content: 'text', tags: 'text' });
 
-export default PostModel;
+// Virtual field for comment count
+PostSchema.virtual('commentCount').get(function() {
+  return this.comments.length;
+});
+
+// Method to check if user has liked the post
+PostSchema.methods.isLikedBy = function(userId: mongoose.Types.ObjectId) {
+  return this.likes.some((like: mongoose.Types.ObjectId) => like.toString() === userId.toString());
+};
+
+export default mongoose.models.Post || mongoose.model<IPost>("Post", PostSchema);

@@ -630,7 +630,7 @@ export default function ProfilePage() {
                                       index % 3 === 0
                                         ? "default"
                                         : index % 3 === 1
-                                          ? "warning"
+                                          ? "outline"
                                           : "destructive"
                                     }
                                   >
