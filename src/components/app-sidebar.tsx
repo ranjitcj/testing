@@ -41,16 +41,12 @@ const data = {
       title: "Academy",
       url: "#",
       icon: Landmark,
-      // isActive: true,
       items: [
         {
-          title: "Attendance",
+          title: "Check Attendance",
           url: "/dashboard/academy/attendance",
         },
-        {
-          title: "Class Attendance",
-          url: "/dashboard/academy/classattendance",
-        },
+
       ],
     },
     {

@@ -1,4 +1,4 @@
-import { sendVerificationEmail } from "@/mailtrap/emails";
+import {sendVerificationEmail} from "@/email/emails";
 import dbConnect from "@/lib/dbConnect";
 import UserModel from "@/model/User";
 import bcrypt from "bcryptjs";
@@ -39,18 +39,21 @@ export async function POST(request: Request) {
           }
         );
       } else {
+        const newUserName = username;
         const hasedPassword = await bcrypt.hash(password, 10); // Hash password
+        existingUserByEmail.username = newUserName;
         existingUserByEmail.password = hasedPassword;
         existingUserByEmail.verifyCode = verifyCode;
         existingUserByEmail.verifyCodeExpiry = new Date(Date.now() + 3600000); // Set expiry date to 1 hour from now
         await existingUserByEmail.save();
       }
     } else {
+      const newUserName = username;
       const hasedPassword = await bcrypt.hash(password, 10); // Hash password
       const expiryDate = new Date();
       expiryDate.setHours(expiryDate.getHours() + 1); // Set expiry date to 1 hour from now
       const newUser = new UserModel({
-        username,
+        username: newUserName,
         email,
         password: hasedPassword,
         verifyCode,
@@ -62,7 +65,7 @@ export async function POST(request: Request) {
       await newUser.save();
     }
 
-    // await sendVerificationEmail(email, verifyCode);
+    sendVerificationEmail(email, username, verifyCode);
 
     return Response.json(
       {
