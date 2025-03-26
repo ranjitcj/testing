@@ -48,9 +48,9 @@ export const authOptions: NextAuthOptions = {
       if (user) {
         token.id = user._id?.toString();
         token.isVerified = user.isVerified;
-        token.isAcceptingMessage = user.isAcceptingMessage;
         token.username = user.username;
         token.role = user.role;
+        token.rollno = user.rollno;
       }
       return token;
     },
@@ -58,9 +58,9 @@ export const authOptions: NextAuthOptions = {
       if (token) {
         session.user._id = token.id;
         session.user.isVerified = token.isVerified;
-        session.user.isAcceptingMessage = token.isAcceptingMessage;
         session.user.username = token.username;
         session.user.role = token.role;
+        session.user.rollno = token.rollno;
       }
       return session;
     },

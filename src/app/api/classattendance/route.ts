@@ -1,69 +1,55 @@
-import { NextResponse } from 'next/server';
+'use server';
 
-export async function POST(request: Request) {
+// Define the shape of the attendance submission request
+interface AttendanceSubmissionProps {
+  classCode: string;
+  subjectName: string;
+  startRoll: number;
+  attendance: string[];
+}
+
+// Define the response type
+interface SubmissionResponse {
+  message?: string;
+  error?: string;
+}
+
+export async function submitAttendance(data: AttendanceSubmissionProps): Promise<SubmissionResponse> {
   try {
-    const body = await request.json();
-    const { classCode, subjectName, attendance } = body;
-
-    // Validate request data
-    if (!classCode || !subjectName || !attendance) {
-      return NextResponse.json(
-        { error: 'Missing required fields' },
-        { status: 400 }
-      );
-    }
-
-    // In a real application, you would make a request to your backend API
-    // or directly interact with a database. For this example, we'll simulate
-    // the API call to Google Script.
-
-    // URL for the Google Script (as shown in your HTML example)
-    const scriptUrl = new URL("https://script.google.com/macros/s/AKfycbxCtcHvxpj_uQTDhwwAsE5ItuVqArRerEemFQXWmH1fOJkXkOiffRTHFBf9ZA9TS7QW/exec");
-    scriptUrl.searchParams.append("mode", "push");
-    scriptUrl.searchParams.append("class_code", classCode);
-    scriptUrl.searchParams.append("subject_name", subjectName);
-    scriptUrl.searchParams.append("attendance", attendance);
+    // Current date in YYYY-MM-DD format
+    const currentDate = new Date().toISOString().split('T')[0];
     
-    try {
-      // Make the request to Google Script
-      const response = await fetch(scriptUrl.toString(), {
-        method: "GET",
-        // Note: In production, you should handle CORS properly
-        // and consider using server-side requests for security
-      });
-      
-      if (!response.ok) {
-        throw new Error('Failed to submit attendance to Google Script');
-      }
-      
-      const data = await response.json();
-      
-      if (data.error) {
-        return NextResponse.json(
-          { error: data.error },
-          { status: 500 }
-        );
-      }
-      
-      return NextResponse.json({
-        message: 'Attendance submitted successfully',
-        data: data
-      });
-    } catch (error) {
-      console.error('Error submitting to Google Script:', error);
-      
-      // Return a controlled error response
-      return NextResponse.json(
-        { error: 'Failed to submit attendance. Please try again later.' },
-        { status: 500 }
-      );
+    // Prepare attendance data with date
+    const attendanceString = [currentDate, ...data.attendance].join(',');
+    
+    // Construct the URL with query parameters
+    const url = new URL("https://script.google.com/macros/s/AKfycbxCtcHvxpj_uQTDhwwAsE5ItuVqArRerEemFQXWmH1fOJkXkOiffRTHFBf9ZA9TS7QW/exec");
+    url.searchParams.append("mode", "push");
+    url.searchParams.append("class_code", data.classCode);
+    url.searchParams.append("subject_name", data.subjectName);
+    url.searchParams.append("start_roll", data.startRoll.toString());
+    url.searchParams.append("attendance", attendanceString);
+    
+    // Send request
+    const response = await fetch(url.toString(), {
+      method: "GET",
+      cache: 'no-store', // Disable caching for real-time submissions
+    });
+    
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
     }
+    
+    const result = await response.json();
+    
+    // Check if the response indicates an error
+    if (result.error) {
+      return { error: result.error };
+    }
+    
+    return { message: result.message || 'Attendance submitted successfully!' };
   } catch (error) {
-    console.error('Error processing request:', error);
-    
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    console.error('Submission error:', error);
+    return { error: 'An unexpected error occurred during submission.' };
   }
 }

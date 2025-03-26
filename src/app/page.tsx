@@ -9,7 +9,14 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { Avatar, AvatarFallback} from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ThumbsUp, MessageCircle, Share2, Eye, ChevronLeft, ChevronRight } from "lucide-react";
+import { ThumbsUp, MessageCircle, Share2, Eye, ChevronLeft, ChevronRight, Plus } from "lucide-react";
+
+
+
+
+
+
+
 
 export default function Page() {
   const [posts, setPosts] = useState<IPost[]>([]);
@@ -33,8 +40,12 @@ export default function Page() {
     loadPosts();
   }, []);
 
+  function handleAddNew() {
+    location.replace("/dashboard/post")
+  }
+
   return (
-    <div className="[--header-height:calc(theme(spacing.14))]">
+    <div className="[--header-height:calc(theme(spacing.14))] relative">
       <SidebarProvider className="flex flex-col">
         <SiteHeader />
         <div className="flex flex-1">
@@ -71,6 +82,16 @@ export default function Page() {
           </SidebarInset>
         </div>
       </SidebarProvider>
+
+      {/* Add New Post Button */}
+      <Button 
+        onClick={handleAddNew}
+        size="icon"
+        className="fixed bottom-6 right-6 z-50 w-12 h-12 rounded-full shadow-lg"
+        aria-label="Add new post"
+      >
+        <Plus className="h-6 w-6" />
+      </Button>
     </div>
   );
 }
@@ -159,7 +180,7 @@ function PostCard({ post }: PostCardProps) {
       <CardHeader className="pb-2">
         <div className="flex items-center gap-2">
           <Avatar className="h-8 w-8">
-            <AvatarFallback>{post.author.toString().substring(0, 2)}</AvatarFallback>
+            {/* <AvatarFallback>{post.author.toString().substring(0, 2)}</AvatarFallback> */}
           </Avatar>
           <div>
             <p className="text-xs text-muted-foreground">
@@ -168,11 +189,12 @@ function PostCard({ post }: PostCardProps) {
           </div>
         </div>
         <CardTitle className="line-clamp-2 text-lg">
-          {post.category} - {post.tags.join(", ")}
+          {post.content}
         </CardTitle>
       </CardHeader>
       <CardContent className="pb-2 flex-grow">
-        <p className="line-clamp-3 text-sm">{post.content}</p>
+        <p className="line-clamp-3 text-sm">{post.category}</p>
+        <p className="line-clamp-3 text-sm">{post.tags.join(", ")}</p>
       </CardContent>
       <CardFooter className="pt-2 flex justify-between text-muted-foreground text-xs">
         <div className="flex items-center gap-3">
@@ -199,3 +221,6 @@ function PostCard({ post }: PostCardProps) {
     </Card>
   );
 }
+
+
+

@@ -1,12 +1,22 @@
 import mongoose, { Schema, Document } from "mongoose";
+import { ObjectId } from 'mongodb';
 
+export interface IUser {
+  _id: ObjectId | string;
+  username: string;
+  email: string;
+  profileImage?: string;
+  createdAt: Date;
+  lastLogin?: Date;
+  // Add other fields as needed
+}
 export interface User extends Document {
   name: string;
   username: string;
   role: "student" | "app-user" | "admin" | "teacher";
   email: string;
-  password: string;
   rollno: string;
+  password: string;
   verifyCode: string;
   verifyCodeExpiry: Date;
   isVerified: boolean;
@@ -55,13 +65,13 @@ const UserSchema: Schema<User> = new Schema(
       unique: true,
       match: [/.+\@.+\..+/, "Please fill a valid email address"],
     },
-    password: {
-      type: String,
-      required: [true, "Password is required"],
-    },
     rollno: {
       type: String,
       default: "",
+    },
+    password: {
+      type: String,
+      required: [true, "Password is required"],
     },
     verifyCode: {
       type: String,

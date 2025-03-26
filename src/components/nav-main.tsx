@@ -47,7 +47,7 @@ export function NavMain({
           {
             title: "Take Class Attendance",
             url: "/dashboard/academy/classattendance",
-          }
+          } 
         ]
       };
     }

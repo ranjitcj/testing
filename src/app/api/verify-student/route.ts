@@ -4,6 +4,7 @@ import UserModel from "@/model/User";
 import { NextResponse } from "next/server";
 import { authOptions } from "../auth/[...nextauth]/option";
 
+
 export async function POST(request: Request) {
   try {
     // Get session server-side
@@ -57,21 +58,6 @@ export async function POST(request: Request) {
       );
     }
 
-    // Update user role
-    // await UserModel.findByIdAndUpdate(
-    //   existingUser._id,
-    //   {
-    //     role: "student",
-    //   },
-    //   { new: true }
-    // );
-    // await UserModel.findByIdAndUpdate(
-    //   existingUser._id,
-    //   {
-    //     rollno: rollno,
-    //   },
-    //   { new: true }
-    // );
     await UserModel.findByIdAndUpdate(
       existingUser._id,
       {
@@ -81,12 +67,11 @@ export async function POST(request: Request) {
       { new: true }
     );
 
-
-
     return NextResponse.json(
       { success: true, message: "Account verified successfully" },
       { status: 200 }
     );
+
   } catch (error) {
     console.error("Error verifying user:", error);
     return NextResponse.json(

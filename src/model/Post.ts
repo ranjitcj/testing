@@ -7,6 +7,7 @@ export interface IPost extends Document {
     caption?: string;
     altText?: string;
   }[];
+  
   author: mongoose.Types.ObjectId;
   category?: string;
   tags: string[];
