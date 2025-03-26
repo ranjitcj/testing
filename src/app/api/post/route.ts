@@ -32,6 +32,7 @@ export async function POST(req: NextRequest) {
 
     // Create post document
     const post = new Post({
+      authorName: session.user.username, // Assuming user ID is stored in session
       content,
       images: images || [],
       author: session.user._id, // Assuming user ID is stored in session
@@ -52,6 +53,7 @@ export async function POST(req: NextRequest) {
           _id: post._id,
           content: post.content,
           images: post.images,
+          authorName: post.authorName,
           author: post.author,
           category: post.category,
           tags: post.tags,

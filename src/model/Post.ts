@@ -7,7 +7,7 @@ export interface IPost extends Document {
     caption?: string;
     altText?: string;
   }[];
-  
+  authorName: string;
   author: mongoose.Types.ObjectId;
   category?: string;
   tags: string[];
@@ -50,6 +50,11 @@ const PostSchema = new Schema<IPost>(
         }
       }
     ],
+    authorName: {
+      type: String,
+      ref: "User",
+      required: [true, "Author is required"]
+    },
     author: {
       type: Schema.Types.ObjectId,
       ref: "User",

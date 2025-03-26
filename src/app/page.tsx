@@ -12,12 +12,6 @@ import { Badge } from "@/components/ui/badge";
 import { ThumbsUp, MessageCircle, Share2, Eye, ChevronLeft, ChevronRight, Plus } from "lucide-react";
 
 
-
-
-
-
-
-
 export default function Page() {
   const [posts, setPosts] = useState<IPost[]>([]);
   const [loading, setLoading] = useState(true);
@@ -180,9 +174,12 @@ function PostCard({ post }: PostCardProps) {
       <CardHeader className="pb-2">
         <div className="flex items-center gap-2">
           <Avatar className="h-8 w-8">
-            {/* <AvatarFallback>{post.author.toString().substring(0, 2)}</AvatarFallback> */}
+            <AvatarFallback>{post.authorName.toString().substring(0, 2).toUpperCase()}</AvatarFallback>
           </Avatar>
           <div>
+            <p className="text-sm font-medium">
+              {post ? post.authorName : 'Loading...'}
+            </p>
             <p className="text-xs text-muted-foreground">
               {new Date(post.createdAt).toLocaleDateString()}
             </p>
@@ -221,6 +218,5 @@ function PostCard({ post }: PostCardProps) {
     </Card>
   );
 }
-
 
 
