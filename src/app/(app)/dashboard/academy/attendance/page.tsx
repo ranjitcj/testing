@@ -89,50 +89,6 @@ export default function StudentAttendancePage() {
     return totalClasses > 0 ? (totalPresent / totalClasses) * 100 : 0;
   };
 
-  // New function to render detailed attendance details
-  const renderDetailedAttendance = () => {
-    if (!attendanceData) return null;
-
-    return (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {/* Subject-wise Attendance Cards */}
-        {attendanceData.attendance_data
-          .filter(subject => subject.subject !== "MAIN")
-          .map((subject, index) => (
-            <Card key={index} className="shadow-md">
-              <CardHeader>
-                <CardTitle className="text-lg font-semibold">{subject.subject}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-2">
-                  <div className="flex justify-between items-center">
-                    <span>Attendance Percentage</span>
-                    <span className={`font-bold ${
-                      subject.attendancePercentage >= 75 
-                        ? 'text-green-600' 
-                        : subject.attendancePercentage >= 60 
-                          ? 'text-yellow-600' 
-                          : 'text-red-600'
-                    }`}>
-                      {subject.attendancePercentage.toFixed(1)}%
-                    </span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span>Present Classes</span>
-                    <span>{subject.attendance.filter(r => r.status === 'P').length}</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span>Total Classes</span>
-                    <span>{subject.attendance.length}</span>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-      </div>
-    );
-  };
-
   return (
     <div className="container mx-auto px-4 py-8">
       <Card className="shadow-lg">

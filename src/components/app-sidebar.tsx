@@ -2,22 +2,13 @@
 
 import * as React from "react";
 import {
-  BookOpen,
-  Bot,
-  Cable,
   Clapperboard,
   Command,
-  Frame,
   Landmark,
   Library,
   LifeBuoy,
-  Link,
-  Map,
   MessagesSquare,
-  PieChart,
   Send,
-  Settings2,
-  SquareTerminal,
   UserRoundSearch,
 } from "lucide-react";
 

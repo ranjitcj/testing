@@ -159,7 +159,7 @@ export default function CreatePostPage() {
         throw new Error(errorData.message || "Failed to create post");
       }
       
-      const data = await response.json();
+
       
       // Show success confirmation
       setSuccessMessage(`Post created successfully! ${status === "published" ? "Your post is now live." : `It has been saved as ${status}.`}`);

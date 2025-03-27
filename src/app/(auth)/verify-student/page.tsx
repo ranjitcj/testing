@@ -16,7 +16,6 @@ import axios, { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { Input } from "@/components/ui/input";
 import { verifyStudentSchema } from "@/schemas/verifyStudentSchemas";
 import { ApiResponseStudentV } from "@/types/ApiResponseStudentV";
 import Image from "next/image";

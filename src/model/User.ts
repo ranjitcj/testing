@@ -136,7 +136,22 @@ const UserSchema: Schema<User> = new Schema(
   },
   { timestamps: true }
 );
+export interface Message extends Document {
+  content: string;
+  createdAt: Date;
+}
 
+const MessageSchema: Schema<Message> = new mongoose.Schema({
+  content: {
+    type: String,
+    required: true,
+  },
+  createdAt: {
+    type: Date,
+    required: true,
+    default: Date.now,
+  },
+});
 const UserModel =
   (mongoose.models.User as mongoose.Model<User>) ||
   mongoose.model<User>("User", UserSchema);

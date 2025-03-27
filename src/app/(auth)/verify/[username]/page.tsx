@@ -23,7 +23,6 @@ import {
   InputOTPGroup,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
-import { useEffect, useState } from "react";
 import Image from "next/image";
 import logo from "@/app/logo/logo.png";
 
