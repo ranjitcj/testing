@@ -1,13 +1,10 @@
 "use server"
 
-import { NextRequest, NextResponse } from "next/server";
+import {NextResponse } from "next/server";
 import dbConnect from "@/lib/dbConnect";
 import Post from "@/model/Post";
 
-export async function GET(
-  request: NextRequest, 
-  { params }: { params: { Id: string } }
-) {
+export async function GET() {
   // Connect to the database
   await dbConnect();
   

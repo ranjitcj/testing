@@ -52,7 +52,7 @@ export async function POST(req: NextRequest) {
     const folder = `posts/${userId}/${date}`;
 
     // Upload to Cloudinary
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       const uploadStream = cloudinary.uploader.upload_stream(
         {
           folder,

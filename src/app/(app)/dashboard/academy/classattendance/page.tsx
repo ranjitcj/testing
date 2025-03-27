@@ -725,7 +725,7 @@ export default function AttendanceManagementSystem() {
         setIsError(false);
       }
     } catch (error) {
-      setStatusMessage('Network error occurred. Please try again.');
+      setStatusMessage(`Error: ${error}`);
       setIsError(true);
       setIsSubmitted(false);
     }
