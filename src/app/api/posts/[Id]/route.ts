@@ -2,7 +2,7 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import dbConnect from "@/lib/dbConnect";
-import UserModel from "@/model/User";
+import Post from "@/model/Post";
 
 export async function GET(
   request: NextRequest, 
@@ -14,7 +14,7 @@ export async function GET(
   try {
     const userId = params.Id;
     const decodedUserId = decodeURIComponent(userId);
-    const user = await UserModel.findOne({ _id: decodedUserId });
+    const user = await Post.find({ _id: decodedUserId });
 
     if (!user) {
       return NextResponse.json(

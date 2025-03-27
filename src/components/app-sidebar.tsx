@@ -98,15 +98,15 @@ const data = {
       items: [
         {
           title: "Cricket Club",
-          url: "/dashboard/clubs/cricket",
+          url: "#",
         },
         {
           title: "Chess Club",
-          url: "/dashboard/clubs/chess",
+          url: "#",
         },
         {
           title: "Coding Club",
-          url: "/dashborad/clubs/coding",
+          url: "#",
         },
         {
           title: "Drown Club",

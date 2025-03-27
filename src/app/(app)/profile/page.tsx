@@ -183,76 +183,12 @@ export default function ProfilePage() {
     responsive: true,
   };
 
-  // Toggle dark mode and update document class
-  useEffect(() => {
-    if (darkMode) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  }, [darkMode]);
+
 
   return (
     <div className="flex min-h-screen bg-background">
       {/* Desktop Sidebar */}
-      <aside className="hidden md:flex flex-col w-64 p-5 border-r h-screen sticky top-0">
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold">College Connect</h2>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => setDarkMode(!darkMode)}
-          >
-            {darkMode ? (
-              <Sun className="h-5 w-5" />
-            ) : (
-              <Moon className="h-5 w-5" />
-            )}
-          </Button>
-        </div>
-
-        <nav className="space-y-2">
-          <Button variant="ghost" className="w-full justify-start" asChild>
-            <Link href="/">
-              <Home className="mr-2 h-4 w-4" />
-              Home
-            </Link>
-          </Button>
-          <Button variant="ghost" className="w-full justify-start" asChild>
-            <Link href="/attendance-records">
-              <Clipboard className="mr-2 h-4 w-4" />
-              Attendance Record
-            </Link>
-          </Button>
-          <Button variant="ghost" className="w-full justify-start" asChild>
-            <Link href="#">
-              <Book className="mr-2 h-4 w-4" />
-              Library Record
-            </Link>
-          </Button>
-          <Button variant="ghost" className="w-full justify-start" asChild>
-            <Link href="#">
-              <Users className="mr-2 h-4 w-4" />
-              Take Attendance
-            </Link>
-          </Button>
-        </nav>
-
-        <div className="mt-auto">
-          <Button variant="ghost" className="w-full justify-start" asChild>
-            <Link href="#">
-              <Avatar className="h-6 w-6 mr-2">
-                <AvatarImage
-                  src={userData.profilePicture || ""}
-                  alt={userData.name}
-                />
-                <AvatarFallback>{userData.name.charAt(0)}</AvatarFallback>
-              </Avatar>
-              {userData.name}
-            </Link>
-          </Button>
-        </div>
-      </aside>
+      
 
       {/* Mobile Sidebar */}
       <Sheet>
@@ -279,18 +215,7 @@ export default function ProfilePage() {
                 <Bell className="h-5 w-5" />
               </Button>
 
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => setDarkMode(!darkMode)}
-                className="hidden md:flex"
-              >
-                {darkMode ? (
-                  <Sun className="h-5 w-5" />
-                ) : (
-                  <Moon className="h-5 w-5" />
-                )}
-              </Button>
+              
             </div>
           </header>
 
@@ -310,49 +235,6 @@ export default function ProfilePage() {
                   )}
                 </Button>
               </div>
-
-              <nav className="space-y-2">
-                <Button
-                  variant="ghost"
-                  className="w-full justify-start"
-                  asChild
-                >
-                  <Link href="/">
-                    <Home className="mr-2 h-4 w-4" />
-                    Home
-                  </Link>
-                </Button>
-                <Button
-                  variant="ghost"
-                  className="w-full justify-start"
-                  asChild
-                >
-                  <Link href="/attendance-records">
-                    <Clipboard className="mr-2 h-4 w-4" />
-                    Attendance Record
-                  </Link>
-                </Button>
-                <Button
-                  variant="ghost"
-                  className="w-full justify-start"
-                  asChild
-                >
-                  <Link href="#">
-                    <Book className="mr-2 h-4 w-4" />
-                    Library Record
-                  </Link>
-                </Button>
-                <Button
-                  variant="ghost"
-                  className="w-full justify-start"
-                  asChild
-                >
-                  <Link href="#">
-                    <Users className="mr-2 h-4 w-4" />
-                    Take Attendance
-                  </Link>
-                </Button>
-              </nav>
 
               <div className="mt-auto">
                 <Button
